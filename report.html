@@ -11859,7 +11859,7 @@ div#notebook {
 <span class="n">n_students</span> <span class="o">=</span> <span class="n">student_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># TODO: Calculate number of features</span>
-<span class="n">n_features</span> <span class="o">=</span> <span class="n">student_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="n">student_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
 
 <span class="c1"># TODO: Calculate passing students</span>
 <span class="n">n_passed</span> <span class="o">=</span> <span class="n">student_data</span><span class="p">[</span><span class="s1">&#39;school&#39;</span><span class="p">][</span><span class="n">student_data</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -11868,7 +11868,7 @@ div#notebook {
 <span class="n">n_failed</span> <span class="o">=</span> <span class="n">student_data</span><span class="p">[</span><span class="s1">&#39;school&#39;</span><span class="p">][</span><span class="n">student_data</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
 
 <span class="c1"># TODO: Calculate graduation rate</span>
-<span class="n">grad_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_passed</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">n_passed</span> <span class="o">+</span> <span class="n">n_failed</span><span class="p">))</span>
+<span class="n">grad_rate</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_passed</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">((</span><span class="n">n_passed</span> <span class="o">+</span> <span class="n">n_failed</span><span class="p">))</span>
 
 <span class="c1"># Print the results</span>
 <span class="k">print</span> <span class="s2">&quot;Total number of students: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_students</span><span class="p">)</span>
@@ -11889,10 +11889,10 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Total number of students: 395
-Number of features: 31
+Number of features: 30
 Number of students who passed: 265
 Number of students who failed: 130
-Graduation rate of the class: 0.67%
+Graduation rate of the class: 67.09%
 </pre>
 </div>
 </div>
@@ -12155,17 +12155,22 @@ From my understanding, this is a classification problem. Based on my understandi
      a. Gaussian Naive Bayes is used for classifying email as Spam or Not Spam.
      b. Gaussian NB is simple to implement. It performs well with less number of training data as in this case, which is about 300. Gaussian NB needs little tuning
      c. Based on further reading on Gaussian NB, it can not learn intearction between features
-     d. The fewer number of training examples, most of the features have values that are either represnted as binary or categorically, Gaussian NB would be a suitable model for this problem</p>
+     d. In case of fewer number of training examples, Gaussian Classifier usually does better compared to other classifiers
+     e. Gaussian Naive Bayes might work better, when feature values can be represented in categorical format, which is this case is possible.</p>
 <p><strong>2. Decision Tree: </strong>
      a. Decision Tree are popular in finance and investment industry
      b. Decision Tree are easy to understand and implement. Decision tree can very easily be visualized on how it is implemented. Decision tree can handle non-linear data.
      c. Decision tree can easily suffer from overfitting. Decision Tree dont support learning on the fly, need to train when new data is added. Decision Tree needs lot of tunning to perform better
-     d. Decision tree perform quick classification when data presented in a tabular format, just like the example provided</p>
+     d. Decision tree is very fast to implement and train. 
+     e. Decision tree does not require too much of data pre-processing like in case of other classifiers. The reason being with or without data pre-processing the structure of the tress would remain the same.
+     f. Decision tree are not overly sensitive to outliers.
+The reason for choosing decision tree for this classification is because, I did not need to do any data pre-processing and it is easy to implement, understand.</p>
 <p><strong>3. Support Vector Machine(SVM): </strong>
      a. SVM is widely used solving classification problem in bio-medical and bioinformatics field, like classifying individual in group by the status of disease (like diabetes, blood pressure, cancer, etc)
      b. SVM works well for non-linear data very high dimensioanl feature set
      c. SVM is memory and time instensive to train
      d. In the problem presented has many feature set, which may/may not be non-linear and hence suitable to use SVM</p>
+<p>The reason I choose the above classifiers apart from the pros and cons mentioned for each of the classifier are I believe these are some of the basic required classifiers (including Linear Regression), so understanding the difference between them is an important aspect of machine learning. I tried and implemented all the classifiers mentioned and found that the GradientDescentBossting classifier provides the best accuracy.</p>
 
 </div>
 </div>
@@ -12263,52 +12268,49 @@ From my understanding, this is a classification problem. Based on my understandi
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import the three supervised learning models from sklearn</span>
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="n">BaggingClassifier</span><span class="p">,</span> <span class="n">AdaBoostClassifier</span><span class="p">,</span> <span class="n">GradientBoostingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span><span class="p">,</span> <span class="n">LogisticRegression</span>
 
 <span class="c1"># TODO: Initialize the three models</span>
 <span class="n">clf_A</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="c1">#clf_B = tree.DecisionTreeClassifier(criterion=&quot;entropy&quot;, max_depth=3, random_state=0)</span>
-<span class="n">clf_B</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeClassifier</span><span class="p">()</span>
-<span class="c1">#clf_C = svm.SVC(C=10.0, kernel=&#39;poly&#39;, degree=2)</span>
-<span class="n">clf_C</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
+<span class="n">clf_B</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf_C</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
-<span class="c1"># TODO: Set up the training set sizes</span>
-<span class="n">X_train_100</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span>
-<span class="n">y_train_100</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span>
+<span class="c1"># K-Nearest Neighhbors</span>
+<span class="c1">#clf_D = KNeighborsClassifier()</span>
 
-<span class="n">X_train_200</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span>
-<span class="n">y_train_200</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span>
+<span class="c1"># AdaBoostClassifier</span>
+<span class="c1">#clf_E = AdaBoostClassifier(random_state=42)</span>
 
-<span class="n">X_train_300</span> <span class="o">=</span> <span class="n">X_train</span>
-<span class="n">y_train_300</span> <span class="o">=</span> <span class="n">y_train</span>
+<span class="c1"># Random Forest classifier</span>
+<span class="c1">#clf_F = RandomForestClassifier(random_state=42)</span>
 
+<span class="c1"># Bagging Classifier</span>
+<span class="c1">#clf_G = BaggingClassifier(random_state=42)</span>
 
-<span class="c1">#Gaussian classifier</span>
-<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Gaussian Classifier&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;-----------------------&quot;</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1"># GradientBoostingClassifier</span>
+<span class="c1">#clf_H = GradientBoostingClassifier(random_state=42)</span>
 
-<span class="c1">#Decision Tree</span>
-<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Decision Tree Classifier&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;----------------------------&quot;</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1"># Stochastic Gradient Descent Classifier</span>
+<span class="c1">#clf_I = SGDClassifier(random_state=42)</span>
 
-<span class="c1">#SVM</span>
-<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">SVM Classifier&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;------------------&quot;</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1"># Linear Regresssion Classifier</span>
+<span class="c1">#clf_J = LogisticRegression(random_state=42)</span>
+
+<span class="c1">#for clf in [clf_A, clf_B, clf_C, clf_D, clf_E, clf_F, clf_G, clf_H, clf_I, clf_J]:</span>
+<span class="k">for</span> <span class="n">clf</span> <span class="ow">in</span> <span class="p">[</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">clf_B</span><span class="p">,</span> <span class="n">clf_C</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">num_sets</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]:</span>
+        <span class="n">train_predict</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_train</span><span class="p">[:</span><span class="n">num_sets</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[:</span><span class="n">num_sets</span><span class="p">],</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12323,66 +12325,66 @@ From my understanding, this is a classification problem. Based on my understandi
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 
-Gaussian Classifier
------------------------
+GaussianNB
+----------
 Training a GaussianNB using a training set size of 100. . .
-Trained model in 0.0019 seconds
-Made predictions in 0.0006 seconds.
+Trained model in 0.0021 seconds
+Made predictions in 0.0009 seconds.
 F1 score for training set: 0.8467.
-Made predictions in 0.0006 seconds.
+Made predictions in 0.0004 seconds.
 F1 score for test set: 0.8029.
 Training a GaussianNB using a training set size of 200. . .
-Trained model in 0.0013 seconds
-Made predictions in 0.0007 seconds.
+Trained model in 0.0015 seconds
+Made predictions in 0.0009 seconds.
 F1 score for training set: 0.8406.
-Made predictions in 0.0005 seconds.
+Made predictions in 0.0004 seconds.
 F1 score for test set: 0.7244.
 Training a GaussianNB using a training set size of 300. . .
 Trained model in 0.0014 seconds
-Made predictions in 0.0010 seconds.
+Made predictions in 0.0005 seconds.
 F1 score for training set: 0.8038.
-Made predictions in 0.0006 seconds.
+Made predictions in 0.0003 seconds.
 F1 score for test set: 0.7634.
 
 
-Decision Tree Classifier
-----------------------------
+DecisionTreeClassifier
+----------------------
 Training a DecisionTreeClassifier using a training set size of 100. . .
-Trained model in 0.0013 seconds
-Made predictions in 0.0005 seconds.
+Trained model in 0.0011 seconds
+Made predictions in 0.0003 seconds.
 F1 score for training set: 1.0000.
 Made predictions in 0.0002 seconds.
-F1 score for test set: 0.6154.
+F1 score for test set: 0.6552.
 Training a DecisionTreeClassifier using a training set size of 200. . .
-Trained model in 0.0018 seconds
-Made predictions in 0.0003 seconds.
+Trained model in 0.0012 seconds
+Made predictions in 0.0002 seconds.
 F1 score for training set: 1.0000.
-Made predictions in 0.0003 seconds.
-F1 score for test set: 0.7077.
+Made predictions in 0.0002 seconds.
+F1 score for test set: 0.7500.
 Training a DecisionTreeClassifier using a training set size of 300. . .
-Trained model in 0.0017 seconds
+Trained model in 0.0018 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 1.0000.
 Made predictions in 0.0002 seconds.
-F1 score for test set: 0.6500.
+F1 score for test set: 0.6613.
 
 
-SVM Classifier
-------------------
+SVC
+---
 Training a SVC using a training set size of 100. . .
 Trained model in 0.0012 seconds
-Made predictions in 0.0008 seconds.
+Made predictions in 0.0007 seconds.
 F1 score for training set: 0.8777.
-Made predictions in 0.0009 seconds.
+Made predictions in 0.0010 seconds.
 F1 score for test set: 0.7746.
 Training a SVC using a training set size of 200. . .
-Trained model in 0.0028 seconds
+Trained model in 0.0029 seconds
 Made predictions in 0.0019 seconds.
 F1 score for training set: 0.8679.
 Made predictions in 0.0010 seconds.
 F1 score for test set: 0.7815.
 Training a SVC using a training set size of 300. . .
-Trained model in 0.0061 seconds
+Trained model in 0.0058 seconds
 Made predictions in 0.0042 seconds.
 F1 score for training set: 0.8761.
 Made predictions in 0.0014 seconds.
@@ -12457,24 +12459,24 @@ F1 score for test set: 0.7838.
 <tbody>
 <tr>
 <td style="text-align:center">100</td>
-<td style="text-align:center">0.0013</td>
-<td style="text-align:center">0.0002</td>
+<td style="text-align:center">0.0347</td>
+<td style="text-align:center">0.0004</td>
 <td style="text-align:center">1.0000</td>
-<td style="text-align:center">0.6154</td>
+<td style="text-align:center">0.6552</td>
 </tr>
 <tr>
 <td style="text-align:center">200</td>
-<td style="text-align:center">0.0018</td>
-<td style="text-align:center">0.0004</td>
+<td style="text-align:center">0.0015</td>
+<td style="text-align:center">0.0003</td>
 <td style="text-align:center">1.0000</td>
-<td style="text-align:center">0.7077</td>
+<td style="text-align:center">0.7500</td>
 </tr>
 <tr>
 <td style="text-align:center">300</td>
-<td style="text-align:center">0.0017</td>
+<td style="text-align:center">0.0023</td>
 <td style="text-align:center">0.0002</td>
 <td style="text-align:center">1.0000</td>
-<td style="text-align:center">0.6500</td>
+<td style="text-align:center">0.6613</td>
 </tr>
 </tbody>
 </table>
@@ -12491,22 +12493,22 @@ F1 score for test set: 0.7838.
 <tbody>
 <tr>
 <td style="text-align:center">100</td>
-<td style="text-align:center">0.0012</td>
+<td style="text-align:center">0.0332</td>
 <td style="text-align:center">0.0009</td>
 <td style="text-align:center">0.8777</td>
 <td style="text-align:center">0.7746</td>
 </tr>
 <tr>
 <td style="text-align:center">200</td>
-<td style="text-align:center">0.0028</td>
-<td style="text-align:center">0.0010</td>
+<td style="text-align:center">0.0035</td>
+<td style="text-align:center">0.0012</td>
 <td style="text-align:center">0.8679</td>
 <td style="text-align:center">0.7815</td>
 </tr>
 <tr>
 <td style="text-align:center">300</td>
-<td style="text-align:center">0.0061</td>
-<td style="text-align:center">0.0014</td>
+<td style="text-align:center">0.0060</td>
+<td style="text-align:center">0.0018</td>
 <td style="text-align:center">0.8761</td>
 <td style="text-align:center">0.7838</td>
 </tr>
@@ -12541,8 +12543,8 @@ F1 score for test set: 0.7838.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> Based on the experiments conducted, we have SVM giving the best accuracy, but does take longer time to train on the data and do predictions. As the number of data increase the SVM will get more bworse in training in terms of performance.
-The Decision Tree classifier works the fastest in training and predictions. Also, there is opportunity for further tunning this model, hence will choose the Decision tree classifier going forward.</p>
+<p><strong>Answer: </strong> Based on the experiments conducted, we have SVM giving the best accuracy on the test set (78.38%). SVM classifier takes the longest time to train. Even though SVM takes the longest time to train, the time to predict are fairly similar across Gaussian Naive Bayes, Decision Tree and SVM classifiers.</p>
+<p>So we choose SVM algorithm for further fine tunning using different hyper parameters.</p>
 
 </div>
 </div>
@@ -12562,7 +12564,11 @@ The Decision Tree classifier works the fastest in training and predictions. Also
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> The Decision Tree classifier model is chosen. It takes little time in training the model and predicting the label, thus using minimal computation resource and fast response. The model with some tunning will perform the predictions with fair accuracy.</p>
+<p><strong>Answer: </strong> The SVM classifier is used to train, because it shows the highest accuracy on the test set.</p>
+<p>A SVM classifier is used for classification problems.
+a. In case of SVM we plot each training data point in a n-dimensional plane, where n is the number of features in the training set, then SVM performs a classification by finding an hyperplane that seperates into two classification. 
+b. The best hyperplane that seperates the two classification maximses the margin (i.e. the distance between the data points of the either class in the hyperplane).
+c. When predicting, we plot the test data point on the hyperplane and print the classification result based on which side of the hyperplane the data point is.</p>
 
 </div>
 </div>
@@ -12593,7 +12599,7 @@ The Decision Tree classifier works the fastest in training and predictions. Also
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import &#39;GridSearchCV&#39; and &#39;make_scorer&#39;</span>
@@ -12601,16 +12607,15 @@ The Decision Tree classifier works the fastest in training and predictions. Also
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
 <span class="c1"># TODO: Create the parameters list you wish to tune</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
-              <span class="s1">&#39;criterion&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="s1">&#39;gini&#39;</span><span class="p">],</span>
-              <span class="s1">&#39;max_depth&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
-              <span class="s1">&#39;class_weight&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="s2">&quot;balanced&quot;</span><span class="p">],</span>
-              <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span>
-              <span class="s1">&#39;min_samples_leaf&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
-             <span class="p">}</span>
+<span class="n">C_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">gamma_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">],</span>
+                  <span class="n">C</span><span class="o">=</span><span class="n">C_range</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">gamma_range</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
 
 <span class="c1"># TODO: Initialize the classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="c1"># TODO: Make an f1 scoring function using &#39;make_scorer&#39; </span>
 <span class="n">f1_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
@@ -12619,7 +12624,7 @@ The Decision Tree classifier works the fastest in training and predictions. Also
 <span class="n">grid_obj</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">f1_scorer</span><span class="p">)</span>
 
 <span class="c1"># TODO: Fit the grid search object to the training data and find the optimal parameters</span>
-<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">grid_obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">)</span>
+<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">grid_obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
 <span class="c1"># Get the estimator</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">grid_obj</span><span class="o">.</span><span class="n">best_estimator_</span>
@@ -12639,10 +12644,16 @@ The Decision Tree classifier works the fastest in training and predictions. Also
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Made predictions in 0.0002 seconds.
-Tuned model has a training F1 score of 0.8386.
-Made predictions in 0.0002 seconds.
-Tuned model has a testing F1 score of 0.7867.
+<pre>{&#39;kernel&#39;: [&#39;rbf&#39;, &#39;linear&#39;], &#39;C&#39;: array([  0.01      ,   0.02154435,   0.04641589,   0.1       ,
+         0.21544347,   0.46415888,   1.        ,   2.15443469,
+         4.64158883,  10.        ]), &#39;gamma&#39;: array([  1.00000000e-09,   1.29154967e-08,   1.66810054e-07,
+         2.15443469e-06,   2.78255940e-05,   3.59381366e-04,
+         4.64158883e-03,   5.99484250e-02,   7.74263683e-01,
+         1.00000000e+01])}
+Made predictions in 0.0046 seconds.
+Tuned model has a training F1 score of 0.8675.
+Made predictions in 0.0016 seconds.
+Tuned model has a testing F1 score of 0.7945.
 </pre>
 </div>
 </div>
@@ -12666,7 +12677,7 @@ Tuned model has a testing F1 score of 0.7867.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong> The model's final F1 score is 0.8386, its lesser than 1.0000 as seen in case of untuned model. The reason being on an untuned model, it suffered with overfitting. With good tuning the F1 score on the testing data improved from 0.6500 to 0.7867, thus generalizing better and improving the accuarcy.</p>
+<p><strong>Answer: </strong> The model's final F1 score is 0.7945. With tuning the F1 score on the testing data improved from 0.7838 to 0.7945, thus generalizing better and improving the accuarcy.</p>
 
 </div>
 </div>
